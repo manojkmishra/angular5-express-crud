@@ -1,4 +1,3 @@
-
 var express= require('express');
 var router = express.Router();
 var mongojs = require('mongojs');  
@@ -17,13 +16,12 @@ router.get('/', function(req, res, next)
 });
 //---------------get data baed on id field
 router.get('/:id', function(req, res, next)
-                {   db.angularcrud.findOne(
-                                        {   _id:mongojs.ObjectId(req.params.id)    },
-                                        function(err, angularcrud)
-                                        {   if(err){ res.send(err); }
-                                            else{  res.json(angularcrud);  }
-                                        }
-                                    );
+                {   db.angularcrud.findOne( {   _id:mongojs.ObjectId(req.params.id) },
+                                            function(err, angularcrud)
+                                              {   if(err){ res.send(err); }
+                                                  else{  res.json(angularcrud);  }
+                                              }
+                                         );
                 }
           );
 //-------------save data in collection
@@ -33,9 +31,10 @@ router.post('/', function(req, res, next)
     {   res.status(404);
         res.json({  "error":"invalid Data"  });
     }
-  else{   db.angularcrud.save(todo, function(err, result)
-              { if(err){ res.send(err); }else{  res.json(result);  }
-              });
+  else{ db.angularcrud.save(todo, function(err, result)
+                                { if(err){ res.send(err); }else{  res.json(result);  }
+                                }
+                            );
        }
 });
 
@@ -44,23 +43,25 @@ router.put('/:id', function(req, res, next)
 {   var todo = req.body;
     var updObj = {};
     if(todo.isCompleted){   updObj.isCompleted = todo.isCompleted    }
-    if(todo.text){      updObj.text = todo.text;    }
-    if(!updObj){     res.status(404);
-                     res.json({        "error":"invalid Data"      });
-              }
-    else{  db.angularcrud.update({  _id: mongojs.ObjectId(req.params.id) }, 
-                             updObj,{},function(err, result)
-                               {  if(err){   res.send(err); }else{  res.json(result);  }
-                               });
+    if(todo.text){  updObj.text = todo.text;  }
+    if(!updObj){  res.status(404);
+                  res.json({  "error":"invalid Data"  });
+               }
+    else{  db.angularcrud.update(  {  _id: mongojs.ObjectId(req.params.id) }, 
+                                   updObj,{},
+                                   function(err, result)
+                                     {  if(err){   res.send(err); }else{  res.json(result);  }    }
+                                );
         }
 });
   // Delete 
 router.delete('/:id', function(req, res, next)
-{   db.angularcrud.remove({   _id: mongojs.ObjectId(req.params.id)  }, '', 
-                     function(err, result)
-                        {  if(err){  res.send(err); } else { res.json(result); }
-                        }
-                    );
+{   db.angularcrud.remove(  {   _id: mongojs.ObjectId(req.params.id)  }, '', 
+                            function(err, result)
+                              {  if(err){  res.send(err); } 
+                                 else { res.json(result); }
+                              }
+                         );
 });
   
 
