@@ -21,4 +21,24 @@ export class CrudComponent implements OnInit
                );
 
   }
+  addTodo($event,todoText)
+  {  if($event.which === 1)
+      {  var result;
+         var newTodo = {  text: todoText.value,  isCompleted: false  };
+         console.log('/todos.ts--addTodo--todoText.value=',todoText.value);
+         console.log('/todos.ts--addTodo--newTodo1=',newTodo);
+         result = this._crudsService.saveTodos(newTodo);
+         result.subscribe(x=> 
+           {   this.crud1.push(newTodo)
+               todoText.value= "";
+             //  console.log('/todos.ts--addTodo--newTodo2=',newTodo);
+           });
+         //  console.log('/todos.ts--addTodo--newTodo3=',newTodo);
+      }
+  }
+  //------------------------------------------------
+
+//-----------------------------------------------------
+ 
+ //----------------------------------------------------------
 }
